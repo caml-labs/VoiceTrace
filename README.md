@@ -4,7 +4,7 @@
   <p align="center">
     📄 <b><a href="https://arxiv.org/abs/xxxx.xxxxx">Paper</a></b>
      | 
-    🌐 <b><a href="https://github.com/caml-labs/VoiceTrace">Project Page</a></b>
+    🌐 <b><a href="https://caml-labs.github.io/VoiceTrace/">Project Page</a></b>
      | 
     🤗 <b><a href="https://huggingface.co/datasets/cara-ai/VoiceTrace-Bench">Benchmark</a></b>
   </p>
