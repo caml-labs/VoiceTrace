@@ -1,0 +1,102 @@
+[
+  {
+    "id": 1,
+    "source": "benchmark_single_sample",
+    "query_text": "In which segment does this speaker repeatedly ask others to be quiet?",
+    "query_audio": "audio/001_query.wav",
+    "document_audio": "audio/001_document.wav",
+    "document_audio_text": "please stop talking stop",
+    "query_audio_speaker_ids": "['seamless_0092']",
+    "document_audio_speaker_ids": "['seamless_0092']"
+  },
+  {
+    "id": 2,
+    "source": "benchmark_single_sample",
+    "query_text": "How does this speaker advise someone to support a person in a difficult situation?",
+    "query_audio": "audio/002_query.wav",
+    "document_audio": "audio/002_document.wav",
+    "document_audio_text": "think that's all you can do just let her know you're there try to make it easy for her cause you know it's not easy in her situation",
+    "query_audio_speaker_ids": "['seamless_0739']",
+    "document_audio_speaker_ids": "['seamless_0739']"
+  },
+  {
+    "id": 3,
+    "source": "benchmark_single_sample",
+    "query_text": "What early memory does this speaker mention being unable to recall?",
+    "query_audio": "audio/003_query.wav",
+    "document_audio": "audio/003_document.wav",
+    "document_audio_text": "Uh, when I was born, I can't really remember is one time.",
+    "query_audio_speaker_ids": "['voxceleb1_id10309']",
+    "document_audio_speaker_ids": "['voxceleb1_id10309']"
+  },
+  {
+    "id": 4,
+    "source": "benchmark_single_sample",
+    "query_text": "What does this speaker express as their motivation for engaging with others?",
+    "query_audio": "audio/004_query.wav",
+    "document_audio": "audio/004_document.wav",
+    "document_audio_text": "Well, I don't know. I just like to excite people. I like people to share ideas.",
+    "query_audio_speaker_ids": "['voxceleb1_id10284']",
+    "document_audio_speaker_ids": "['voxceleb1_id10284']"
+  },
+  {
+    "id": 5,
+    "source": "benchmark_single_sample",
+    "query_text": "How does this speaker describe the moment they were assisted after experiencing pain?",
+    "query_audio": "audio/005_query.wav",
+    "document_audio": "audio/005_document.wav",
+    "document_audio_text": "pain. And finally a car stopped and got out. Can we help you? I said, just loosen, get  rid of this seat belt. And they did, and I was fine when I walked.",
+    "query_audio_speaker_ids": "['voxceleb1_id10303']",
+    "document_audio_speaker_ids": "['voxceleb1_id10303']"
+  },
+  {
+    "id": 6,
+    "source": "benchmark_multi_sample",
+    "query_text": "How does this speaker explain their main concern regarding working from home?",
+    "query_audio": "audio/006_query.wav",
+    "document_audio": "audio/006_document.wav",
+    "document_audio_text": "[S1]: tech has been going down there a lot this week just to see what's going on currently we don't have any answers but i know you don't want to hear that our company is trying their hardest to stop that because when you're having your outages and you're working [S2]: yes [S1]: and we don't we don't want you to you know mess up anything with your job [S2]: uh [S1]: so we're [S1]: gonna have to we're going to try to get that fixed for you in the meantime was there like the powers the only thing that you're going through [S2]: yeah the power that's literally the only concern that i [S1]: okay [S2]: have you know i do mostly work from home so it's [S1]: right [S2]: i could do you know there's other options things like that but you know this is the main",
+    "query_audio_speaker_ids": "['seamless_1305A']",
+    "document_audio_speaker_ids": "['seamless_1304A' 'seamless_1305A']"
+  },
+  {
+    "id": 7,
+    "source": "benchmark_multi_sample",
+    "query_text": "How does this speaker describe the employee they decided to fire?",
+    "query_audio": "audio/007_query.wav",
+    "document_audio": "audio/007_document.wav",
+    "document_audio_text": "[S2]: i [S1]: be [S2]: don't even know man [S1]: acceptable [S2]: yeah [S2]: exactly it's like [S1]: exactly [S2]: there's extra food in there what's the problem it's his attitude it's like it's [S2]: not acceptable behavior but it's like how do you get around that in a situation like you ever had those kind of people at work where you just can't [S1]: yeah i fired him [S2]: yeah well there you go yeah yeah [S1]: you know the guy that comes in every monday after payday was on friday and then whines pisses and moans because he had another grandmother die or his daughter was in the hospital and he had to take her every fucking monday",
+    "query_audio_speaker_ids": "['seamless_2596']",
+    "document_audio_speaker_ids": "['seamless_2596' 'seamless_2597']"
+  },
+  {
+    "id": 8,
+    "source": "benchmark_multi_sample",
+    "query_text": "What does this speaker mention about their experience and interest in working at Starbucks?",
+    "query_audio": "audio/008_query.wav",
+    "document_audio": "audio/008_document.wav",
+    "document_audio_text": "[S1]: thank you nice to meet you [S2]: nice to meet you so any experience being a barista [S1]: it's gonna be my first time but i've always wanted to work at starbucks to be honest [S2]: the first time interesting [S1]: yeah [S2]: okay well have you ever tried well have you tried all flavors of coffee [S1]: well you know coffee is like the coffee world is so huge that i can't say that i've tried it all but i do love coffee and i do like trying new flavors on it",
+    "query_audio_speaker_ids": "['seamless_1840']",
+    "document_audio_speaker_ids": "['seamless_1840' 'seamless_1841']"
+  },
+  {
+    "id": 9,
+    "source": "benchmark_multi_sample",
+    "query_text": "How does this speaker reflect on their shared memory before proposing a brainstorm?",
+    "query_audio": "audio/009_query.wav",
+    "document_audio": "audio/009_document.wav",
+    "document_audio_text": "[S2]: yeah it was just a complete fluke you're just like what what is that who knows [S1]: hopefully that was also [S2]: and had [S1]: a [S2]: no [S1]: good memory [S2]: idea what [S1]: for you [S2]: happened to his dog either that was his story that he went and he climbed down to get his dog and i'm like well where's your dog but that's that [S1]: cool [S2]: cool [S1]: we have a share of memory here so we're gonna brainstorm",
+    "query_audio_speaker_ids": "['seamless_1656']",
+    "document_audio_speaker_ids": "['seamless_1656' 'seamless_1657']"
+  },
+  {
+    "id": 10,
+    "source": "benchmark_multi_sample",
+    "query_text": "What does this speaker say about the significance of having art displayed in major museums worldwide?",
+    "query_audio": "audio/010_query.wav",
+    "document_audio": "audio/010_document.wav",
+    "document_audio_text": "[S1]: have you ever dreamed about maybe one day one of your paintings will end up in one of the art museums in the city [S2]: big hope i think for me especially being in like the met or [S1]: okay [S2]: i think that would be like a really great step for me as an artist really be other persons would [S1]: size from awards there's also recognition from having your painting being hang around one of some of the biggest museums not only here in the states but also around the world so you know that's definitely a dream for every artist and i think you have a lot of ambitions as well just keep working hard and i think patience will pays off and with your hard work as well",
+    "query_audio_speaker_ids": "['seamless_1420']",
+    "document_audio_speaker_ids": "['seamless_1420' 'seamless_1766']"
+  }
+]

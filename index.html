@@ -1,0 +1,835 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VoiceTrace</title>
+  <style>
+    :root {
+      --bg: #f7f9fc;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #4b5563;
+      --accent: #2563eb;
+      --border: #e5e7eb;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 48px 20px 64px;
+    }
+
+    .hero {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+      text-align: center;
+    }
+
+    h1, h2, h3 {
+      margin-top: 0;
+      line-height: 1.3;
+    }
+
+    h1 {
+      font-size: 1.6rem;
+      margin-bottom: 12px;
+      white-space: normal;
+      overflow-wrap: anywhere;
+    }
+
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 10px;
+      justify-content: center;
+    }
+
+    .links a {
+      text-decoration: none;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .section {
+      margin-top: 28px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+    }
+
+    ul {
+      margin: 10px 0 0;
+      padding-left: 20px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .card {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px;
+      background: #fbfdff;
+    }
+
+    .method-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .authors {
+      margin: 12px 0 6px;
+      font-weight: 600;
+    }
+
+    .affiliations {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .affiliations li + li {
+      margin-top: 4px;
+    }
+
+    .figure {
+      margin: 16px 0 0;
+    }
+
+    .figure img {
+      width: 100%;
+      height: auto;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: #fff;
+      display: block;
+    }
+
+    .caption {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      text-align: center;
+    }
+
+    .citation-block {
+      margin-top: 12px;
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #fbfdff;
+      overflow-x: auto;
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+
+    .controls {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 4px;
+    }
+
+    .controls span {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-right: 2px;
+    }
+
+    .filter-btn {
+      border: 1px solid var(--border);
+      background: #fff;
+      padding: 5px 14px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      cursor: pointer;
+      color: var(--muted);
+    }
+
+    .filter-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .filter-btn.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    .card-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .sample-card {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .sample-card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      background: #eef2ff;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sample-id {
+      flex-shrink: 0;
+      width: 26px;
+      height: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.78rem;
+    }
+
+    .tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 2px 9px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .tag-single { background: #ecfdf5; color: #059669; }
+    .tag-multi { background: #fffbeb; color: #d97706; }
+
+    .sample-card-body {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .sample-col {
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .sample-col-right {
+      border-left: 1px solid var(--border);
+      justify-content: center;
+    }
+
+    @media (max-width: 640px) {
+      .sample-card-body { grid-template-columns: 1fr; }
+      .sample-col-right { border-left: none; border-top: 1px solid var(--border); }
+    }
+
+    .field-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .sample-query-text {
+      font-size: 0.95rem;
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .audio-block audio {
+      width: 100%;
+      height: 38px;
+      border-radius: 8px;
+    }
+
+    .section-subtitle {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text);
+      margin: 22px 0 10px;
+    }
+
+    .prompt-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    @media (max-width: 640px) {
+      .prompt-grid { grid-template-columns: 1fr; }
+    }
+
+    .prompt-box {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .prompt-box-header {
+      padding: 8px 14px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .prompt-box-header.generate { background: #eff6ff; color: #2563eb; }
+    .prompt-box-header.verify { background: #fef3c7; color: #b45309; }
+
+    .prompt-box-body {
+      padding: 12px 14px;
+      font-size: 0.82rem;
+      line-height: 1.6;
+      color: var(--text);
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      white-space: pre-wrap;
+      word-break: break-word;
+      max-height: 240px;
+      overflow-y: auto;
+    }
+
+    .pipeline-examples {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      margin-top: 14px;
+    }
+
+    .pipeline-example {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .pipeline-example-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      background: #eef2ff;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .pipeline-example-header .example-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .stage {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 14px 16px;
+    }
+
+    .stage-header {
+      padding: 8px 14px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .stage-header.generate { background: #eff6ff; color: #2563eb; border-bottom: 1px solid #bfdbfe; }
+    .stage-header.verify { background: #fef3c7; color: #b45309; border-bottom: 1px solid #fde68a; }
+
+    .stage-header .stage-arrow { margin-left: auto; font-size: 0.7rem; opacity: 0.6; }
+
+    .stage-body {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: stretch;
+    }
+
+    .stage-io {
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .stage-io-label {
+      font-size: 0.68rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+    }
+
+    .stage-io-content {
+      font-size: 0.88rem;
+      line-height: 1.65;
+      color: var(--text);
+    }
+
+    .stage-io-content audio {
+      width: 100%;
+      height: 34px;
+      border-radius: 6px;
+      margin-top: 2px;
+    }
+
+    .stage-io-content .transcript {
+      margin-top: 6px;
+      padding: 8px 10px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.84rem;
+      line-height: 1.6;
+      color: var(--text);
+      max-height: 120px;
+      overflow-y: auto;
+    }
+
+    .stage-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 4px;
+      color: var(--muted);
+      font-size: 1.2rem;
+    }
+
+    .stage-result-badge {
+      display: inline-block;
+      padding: 4px 13px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    .badge-yes { background: #ecfdf5; color: #059669; }
+    .badge-no { background: #fef2f2; color: #dc2626; }
+
+    @media (max-width: 640px) {
+      .stage-body { grid-template-columns: 1fr; }
+      .stage-divider { padding: 8px 0; transform: rotate(90deg); }
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <section class="hero">
+      <h1>VoiceTrace: A Benchmark and Unified Framework for Who-Said-What Speech Retrieval</h1>
+      <p class="authors">
+        Aaron Yee, Fengjie Lu, Jiarui Hai, Chenang Jiang, Helin Wang, Siwei Tu, Lingyun Sun
+      </p>
+      <!-- <div class="links">
+        <a href="https://arxiv.org/abs/xxxx.xxxxx" target="_blank" rel="noopener noreferrer">Paper</a>
+        <a href="#" target="_blank" rel="noopener noreferrer">Github</a>
+        <a href="#" target="_blank" rel="noopener noreferrer">Benchmark</a>
+      </div> -->
+    </section>
+
+    <section class="section">
+      <h2>Benchmark Construction</h2>
+      <p>
+        <strong>VoiceTrace-Bench</strong> evaluates hybrid speech retrieval across single- and multi-speaker
+        scenarios: each query pairs a text query with a reference speech utterance, and a candidate document
+        is relevant only if the queried content is spoken by the speaker specified in the reference speech.
+      </p>
+      <p>
+        We build it from four corpora &mdash; <strong>VoxCeleb / VoxCeleb2</strong> (single-speaker) and
+        <strong>VoxConverse / Seamless Interaction</strong> (multi-speaker) &mdash; through three steps:
+      </p>
+      <ul>
+        <li><strong>Sampling</strong>: pair reference speech and candidate documents per speaker (single-speaker), or via diarization for target speakers within multi-speaker segments</li>
+        <li><strong>Query generation &amp; verification</strong>: transcribe with Qwen3-ASR, generate text queries with DeepSeek-Chat, then automatically verify relevance</li>
+        <li><strong>Manual quality control</strong>: human review and audio editing on the evaluation set</li>
+      </ul>
+      <p>
+        This yields 46K single-speaker and 140K multi-speaker training samples, plus a manually verified
+        evaluation set of 1,580 single-speaker and 500 multi-speaker samples.
+      </p>
+    </section>
+
+    <section class="section">
+      <h2>VoiceTrace-Bench Samples</h2>
+      <div class="controls" id="controls">
+        <span>Filter:</span>
+      </div>
+      <div class="card-list" id="card-list"></div>
+    </section>
+
+    <section class="section">
+      <h2>Dataset Processing Pipeline</h2>
+
+      <h3 class="section-subtitle">Prompts — Single-speaker</h3>
+      <div class="prompt-grid">
+        <div class="prompt-box">
+          <div class="prompt-box-header generate">Generate Prompt</div>
+          <div class="prompt-box-body">Role: You are an expert in Audio Retrieval-Augmented Generation (Audio RAG) data synthesis.
+
+Task Background:
+We are building an Audio RAG system. In this system, a user gives a "Query Audio" (to identify the speaker‘s voice) and a "Question" (to specify the semantic content) to retrieve a specific audio segment from a massive audio corpus.
+Your goal is to generate the "Question" that would allow the user to retrieve this specific audio segment from the audio corpus.
+Task:
+Based on the provided transcript of the specific audio segment, generate a natural and concise "Question" that a user would ask to retrieve this specific audio segment from the massive audio corpus.
+
+STRICT CONSTRAINTS:
+1. The output MUST be a single natural question ending with a question mark (?).
+2. The question should refer to the speaker as "this person", "this speaker", "the speaker", or "this individual".
+3. Use diverse and descriptive verbs (e.g., "reflect on", "discuss", "explain", "describe", "mention", "express").
+4. Vary the opening of your questions. Use a diverse range of interrogatives such as "Where", "How", "What", "In which segment". Do not over-rely on "What".
+5. Focus on the core content of the transcript.
+6. Adopt an external observer's perspective, convert second-person references into objective third-person identifiers or abstract topics.
+6. Answer in English, the total length should not exceed {max_words} words.
+
+Transcript of the specified audio segment: {document}
+
+Output Requirements: Provide only the "Question" string. Do not include any prefix or explanation.
+
+Output: </div>
+        </div>
+        <div class="prompt-box">
+          <div class="prompt-box-header verify">Verify Prompt</div>
+          <div class="prompt-box-body">Role: You are a Quality Control Assistant for RAG data.
+
+Task: Evaluate if the Query (Q) is a valid retrieval instruction for the given Transcript (T).
+
+Transcript (T): {document}
+
+Query (Q): {query}
+
+Criteria:
+- The query is a readable single question.
+- The query is semantically clear and meaningful.
+- The query can be used to retrieve the transcript.
+- The total length of the query does not exceed {max_words} words.
+
+Output requirements:
+Respond with "YES" if the query satisfies ALL criteria.
+Respond with "NO" if it fails any criterion.
+Do not provide any other text.
+
+Output: </div>
+        </div>
+      </div>
+
+      <h3 class="section-subtitle">Prompts — Conversation</h3>
+      <div class="prompt-grid">
+        <div class="prompt-box">
+          <div class="prompt-box-header generate">Generate Prompt</div>
+          <div class="prompt-box-body">Role: You are an expert in Audio Retrieval-Augmented Generation (Audio RAG) data synthesis for conversational scenarios.
+
+Task Background:
+We are building an Audio RAG system. In this system, a user provides a "Query Audio" (a voice sample of a specific speaker) and a "Question" (specifying the semantic content) to retrieve a multi-speaker conversation segment (Document Audio) where that specific speaker is participating.
+
+Task:
+The provided transcript of the conversation audio segment involves multiple speakers (e.g., [S1], [S2]).
+Your goal is to focus specifically on the contributions and context of the target speaker **"{target_label}"**.
+Generate a natural and concise "Question" that a user would ask to find this specific conversation segment based on what **"{target_label}"** said or how they interacted.
+
+STRICT CONSTRAINTS:
+1. The output MUST be a single natural question ending with a question mark (?).
+2. REFERENCING: Refer to the target speaker as "this person", "this speaker", "the speaker", or "this individual". Do not use labels like "{target_label}" in the final output.
+3. PERSPECTIVE: Adopt an external observer's perspective, convert second-person references into objective third-person identifiers or abstract topics.
+4. VERBS: Use diverse verbs (e.g., "discuss", "respond to", "explain", "mention", "reflect on").
+5. VARIETY: Vary the opening of your questions (e.g., "Where does...", "What does...", "How does...", "In which part..."). Do not over-rely on "What".
+6. FOCUS: Ensure the question is anchored in the target speaker's ({target_label}) speech or their reaction within the dialogue.
+7. LANGUAGE: Answer in English. Total length must not exceed {max_words} words.
+
+Transcript:
+{transcript}
+
+Output Requirements: Provide only the "Question" string. Do not include any prefix or explanation.
+
+Output: </div>
+        </div>
+        <div class="prompt-box">
+          <div class="prompt-box-header verify">Verify Prompt</div>
+          <div class="prompt-box-body">Role: You are a Quality Control Assistant for Audio RAG data.
+
+Task: Evaluate if the Question (Q) is a valid retrieval instruction for a specific speaker "{target_label}" in the given conversation Transcript (T).
+
+Context:
+- In the Question (Q), terms like "this speaker", "the person", or "the individual" specifically refer to the Target Speaker **"{target_label}"**.
+- The Question is valid if it correctly describes **"{target_label}"**'s specific statements, reactions, or their role within this conversation.
+
+Transcript (T): {transcript}
+Question (Q): {query}
+Target Speaker to Verify: {target_label}
+
+Validation Criteria:
+1. The question is a single natural question ending with a question mark.
+2. The question is correctly anchored in the target speaker's ({target_label}) speech or reaction within the dialogue. It is acceptable if the question mentions other speakers' topics as context, as long as the focus is on "{target_label}"'s response.
+3. The question is semantically clear and meaningful.
+4. The question is within the {max_words}-word limit.
+
+Output Requirements:
+Only respond with "YES" if the question satisfies ALL criteria.
+Respond with "NO" and the criteria it violates if it fails any criterion.
+Do not provide any other text.
+
+Output: </div>
+        </div>
+      </div>
+
+      <h3 class="section-subtitle">Processing Examples</h3>
+      <div class="pipeline-examples" id="pipeline-examples"></div>
+    </section>
+
+    <section class="section">
+      <h2>License</h2>
+      <p>
+        The repository is licensed under
+        <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener noreferrer">CC BY-NC 4.0</a>
+        (Creative Commons Attribution-NonCommercial 4.0 International).
+      </p>
+    </section>
+
+    <section class="section">
+      <h2>Acknowledgements</h2>
+      <ul>
+        <li>
+          <a href="https://www.robots.ox.ac.uk/~vgg/data/voxceleb/" target="_blank" rel="noopener noreferrer">VoxCeleb / VoxCeleb2</a>
+          for providing large-scale benchmark datasets for speaker-related research.
+        </li>
+        <li>
+          <a href="https://www.robots.ox.ac.uk/~vgg/data/voxconverse/" target="_blank" rel="noopener noreferrer">VoxConverse</a>
+          for providing multi-speaker conversational recordings with diarization annotations.
+        </li>
+        <li>
+          <a href="https://github.com/facebookresearch/seamless_interaction?tab=readme-ov-file" target="_blank" rel="noopener noreferrer">Seamless Interaction</a>
+          for open-source resources that support speech and multimodal interaction research.
+        </li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>Citation</h2>
+      <p>If you find this work useful, please consider contributing to this repo and citing:</p>
+      <pre class="citation-block">@article{Yee2026voicetrace,
+  title={VoiceTrace: A Benchmark and Unified Framework for Who-Said-What Speech Retrieval},
+  author={Aaron Yee and Fengjie Lu and Jiarui Hai and Chenang Jiang and Helin Wang and Siwei Tu and Lingyun Sun},
+  journal={arXiv preprint arXiv:TBD},
+  year={2026}
+}</pre>
+    </section>
+
+  </main>
+
+  <script>
+    const LABELS = {
+      benchmark_single_sample: "Single-speaker",
+      benchmark_multi_sample: "Conversation",
+    };
+
+    function initFilterButtons() {
+      const controls = document.getElementById("controls");
+      const allBtn = document.createElement("button");
+      allBtn.className = "filter-btn active";
+      allBtn.dataset.filter = "all";
+      allBtn.textContent = "All";
+      controls.appendChild(allBtn);
+
+      for (const [key, label] of Object.entries(LABELS)) {
+        const btn = document.createElement("button");
+        btn.className = "filter-btn";
+        btn.dataset.filter = key;
+        btn.textContent = label;
+        controls.appendChild(btn);
+      }
+    }
+
+    function tagClass(source) {
+      return source.includes("single") ? "tag-single" : "tag-multi";
+    }
+
+    function renderCard(item) {
+      const label = LABELS[item.source] || item.source;
+      return `
+        <div class="sample-card" data-source="${item.source}">
+          <div class="sample-card-header">
+            <div class="sample-id">${item.id}</div>
+            <span class="tag ${tagClass(item.source)}">${label}</span>
+          </div>
+          <div class="sample-card-body">
+            <div class="sample-col">
+              <div>
+                <div class="field-label">Query Text</div>
+                <div class="sample-query-text">${item.query_text}</div>
+              </div>
+              <div class="audio-block">
+                <div class="field-label">Query Audio</div>
+                <audio controls preload="none" src="${item.query_audio}"></audio>
+              </div>
+            </div>
+            <div class="sample-col sample-col-right">
+              <div class="audio-block">
+                <div class="field-label">Document Audio</div>
+                <audio controls preload="none" src="${item.document_audio}"></audio>
+              </div>
+            </div>
+          </div>
+        </div>`;
+    }
+
+    function parseSpeakerIds(str) {
+      if (!str) return [];
+      return str.replace(/[\[\]']/g, '').trim().split(/\s+/);
+    }
+
+    function renderPipelineExample(item) {
+      const label = LABELS[item.source] || item.source;
+      const transcript = item.document_audio_text || "Transcript will be provided …";
+      const verifyResult = item.verify_result || "YES";
+      const badgeClass = verifyResult === "YES" ? "badge-yes" : "badge-no";
+
+      const docSpeakerIds = parseSpeakerIds(item.document_audio_speaker_ids);
+      const querySpeakerIds = parseSpeakerIds(item.query_audio_speaker_ids);
+
+      let targetSpeakerHtml = '';
+      if (querySpeakerIds.length > 0 && !item.source.includes("single")) {
+        const localIdx = docSpeakerIds.indexOf(querySpeakerIds[0]);
+        const localLabel = localIdx >= 0 ? `S${localIdx + 1}` : querySpeakerIds[0];
+        targetSpeakerHtml = `<div class="field-label" style="margin-top:10px">Target Speaker</div>
+           <div style="font-size:.88rem">${localLabel}</div>`;
+      }
+      const isConversation = !item.source.includes("single");
+      const genArrow = isConversation
+        ? "Document Transcript + Target Speaker → Query Text"
+        : "Document Transcript → Query Text";
+      const verifyArrow = isConversation
+        ? "Document Transcript + Query Text + Target Speaker → YES / NO"
+        : "Document Transcript + Query Text → YES / NO";
+
+      return `
+        <div class="pipeline-example">
+          <div class="pipeline-example-header">
+            <span class="tag ${tagClass(item.source)}">${label}</span>
+            <span class="example-title">Example — #${item.id}</span>
+          </div>
+
+          <div class="stage">
+            <div class="stage-header generate">
+              <span>Stage 1 — Generation</span>
+              <span class="stage-arrow">${genArrow}</span>
+            </div>
+            <div class="stage-body">
+              <div class="stage-io">
+                <div class="stage-io-label">Input</div>
+                <div class="stage-io-content">
+                  <div class="field-label">Document Audio</div>
+                  <audio controls preload="none" src="${item.document_audio}"></audio>
+                  <div class="field-label" style="margin-top:10px">Document Transcript</div>
+                  <div class="transcript">${transcript}</div>
+                  ${targetSpeakerHtml}
+                </div>
+              </div>
+              <div class="stage-divider">→</div>
+              <div class="stage-io">
+                <div class="stage-io-label">Output</div>
+                <div class="stage-io-content">
+                  <div class="field-label">Generated Query Text</div>
+                  <div>${item.query_text}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="stage">
+            <div class="stage-header verify">
+              <span>Stage 2 — Verification</span>
+              <span class="stage-arrow">${verifyArrow}</span>
+            </div>
+            <div class="stage-body">
+              <div class="stage-io">
+                <div class="stage-io-label">Input</div>
+                <div class="stage-io-content">
+                  <div class="field-label">Document Transcript</div>
+                  <div class="transcript">${transcript}</div>
+                  <div class="field-label" style="margin-top:10px">Query Text</div>
+                  <div>${item.query_text}</div>
+                  ${targetSpeakerHtml}
+                </div>
+              </div>
+              <div class="stage-divider">→</div>
+              <div class="stage-io">
+                <div class="stage-io-label">Output</div>
+                <div class="stage-io-content" style="display:flex;align-items:center;min-height:3rem">
+                  <span class="stage-result-badge ${badgeClass}">${verifyResult}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>`;
+    }
+
+    async function initDemo() {
+      initFilterButtons();
+
+      const resp = await fetch("data.json");
+      const data = await resp.json();
+
+      const list = document.getElementById("card-list");
+      list.innerHTML = data.map(renderCard).join("");
+
+      const pipelineEl = document.getElementById("pipeline-examples");
+      const singleItem = data.find(d => d.source === "benchmark_single_sample");
+      const multiItem = data.find(d => d.source === "benchmark_multi_sample");
+      pipelineEl.innerHTML = [singleItem, multiItem].filter(Boolean).map(renderPipelineExample).join("");
+
+      document.querySelectorAll(".filter-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+          btn.classList.add("active");
+          const filter = btn.dataset.filter;
+          document.querySelectorAll(".sample-card").forEach(card => {
+            card.style.display = (filter === "all" || card.dataset.source === filter) ? "" : "none";
+          });
+        });
+      });
+    }
+
+    initDemo();
+  </script>
+</body>
+</html>
