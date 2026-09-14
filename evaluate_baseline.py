@@ -46,7 +46,7 @@ def pick_eval_split(ds: datasets.Dataset | datasets.DatasetDict) -> datasets.Dat
 
 def load_eval_pairs(
     single_dataset_path: str,
-    conv_dataset_path: str,
+    multi_dataset_path: str,
 ) -> List[EvalPair]:
     pairs: List[EvalPair] = []
 
@@ -65,16 +65,16 @@ def load_eval_pairs(
             )
         )
 
-    conv_ds = datasets.load_dataset("parquet", data_files=f"{conv_dataset_path}/data.parquet")
-    for ind, item in enumerate(pick_eval_split(conv_ds)):
-        query_id = f"conv:{ind}"
-        doc_id = f"conv:{ind}"
+    multi_ds = datasets.load_dataset("parquet", data_files=f"{multi_dataset_path}/data.parquet")
+    for ind, item in enumerate(pick_eval_split(multi_ds)):
+        query_id = f"multi:{ind}"
+        doc_id = f"multi:{ind}"
         pairs.append(
             EvalPair(
-                source="conv",
-                query_audio_path=resolve_audio_path(conv_dataset_path, item["query_audio_path"]),
+                source="multi",
+                query_audio_path=resolve_audio_path(multi_dataset_path, item["query_audio_path"]),
                 query_text=str(item["query_text"]).strip(),
-                doc_audio_path=resolve_audio_path(conv_dataset_path, item["document_audio_path"]),
+                doc_audio_path=resolve_audio_path(multi_dataset_path, item["document_audio_path"]),
                 query_id=query_id,
                 positive_doc_id=doc_id,
             )
@@ -223,7 +223,7 @@ def evaluate_retrieval(
 
     def compute_subset_metrics(
         subset_query_ids: List[str],
-        allowed_doc_source: str = None,  # "single", "conv", or None for mixed
+        allowed_doc_source: str = None,  # "single", "multi", or None for mixed
     ) -> Dict[str, float]:
         subset_rankings = {}
         subset_pos = {}
@@ -274,11 +274,11 @@ def evaluate_retrieval(
         }
 
     single_queries = [qid for qid in query_ids if query_to_source[qid] == "single"]
-    conv_queries = [qid for qid in query_ids if query_to_source[qid] == "conv"]
+    multi_queries = [qid for qid in query_ids if query_to_source[qid] == "multi"]
     mixed_queries = list(query_ids)
     return {
         "single": compute_subset_metrics(single_queries, allowed_doc_source="single"),
-        "conv": compute_subset_metrics(conv_queries, allowed_doc_source="conv"),
+        "multi": compute_subset_metrics(multi_queries, allowed_doc_source="multi"),
         "mixed": compute_subset_metrics(mixed_queries),
     }
 
@@ -292,10 +292,10 @@ def parse_args() -> argparse.Namespace:
         help="Path to single-speaker dataset root.",
     )
     parser.add_argument(
-        "--conv-dataset-path",
+        "--multi-dataset-path",
         type=str,
         required=True,
-        help="Path to conv-speaker dataset root.",
+        help="Path to multi-speaker dataset root.",
     )
     parser.add_argument(
         "--output-json",
@@ -370,7 +370,7 @@ def main() -> None:
 
     pairs = load_eval_pairs(
         single_dataset_path=args.single_dataset_path,
-        conv_dataset_path=args.conv_dataset_path,
+        multi_dataset_path=args.multi_dataset_path,
     )
 
     print("Evaluation mode: all")

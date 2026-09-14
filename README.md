@@ -32,7 +32,7 @@ Then prepare the environment and run baseline evaluation:
 conda create -n eval python=3.12
 conda activate eval
 pip install -r requirements.txt
-python evaluate_baseline.py --single-dataset-path benchmark_data/benchmark_single --conv-dataset-path benchmark_data/benchmark_conv
+python evaluate_baseline.py --single-dataset-path benchmark_data/single --conv-dataset-path benchmark_data/multi
 ```
 
 ## Citation
