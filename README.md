@@ -17,7 +17,7 @@ To evaluate the baseline, first clone this repository:
 
 ```bash
 git clone git@github.com:caml-labs/VoiceTrace.git
-cd VoxRetrieval
+cd VoiceTrace
 ``` 
 
 Then, download the evaluation dataset from Hugging Face:
