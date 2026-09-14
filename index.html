@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>VoiceTrace</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" />
   <style>
     :root {
       --bg: #f7f9fc;
@@ -56,15 +58,72 @@
     .links {
       display: flex;
       flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 10px;
+      gap: 10px;
+      margin-top: 18px;
       justify-content: center;
     }
 
     .links a {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 18px;
+      background: #363636;
+      color: #fff;
       text-decoration: none;
-      color: var(--accent);
-      font-weight: 600;
+      border-radius: 999px;
+      font-weight: 300;
+      font-size: 0.95rem;
+      line-height: 1;
+      transition: background 0.18s ease, transform 0.05s ease;
+    }
+
+    .links a:hover {
+      background: #4a4a4a;
+    }
+
+    .links a:active {
+      transform: translateY(1px);
+    }
+
+    .links a .icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.2em;
+      height: 1.2em;
+    }
+
+    .links a i {
+      font-size: 16px;
+      line-height: 1;
+    }
+
+    .links a img {
+      height: 1em;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .logos {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0px;
+      justify-content: center;
+      align-items: center;
+      margin-top: 18px;
+    }
+
+    .logos img {
+      height: 50px;
+      width: auto;
+      object-fit: contain;
+      opacity: 0.85;
+      transition: opacity 0.2s;
+    }
+
+    .logos img:hover {
+      opacity: 1;
     }
 
     .section {
@@ -461,11 +520,32 @@
       <p class="authors">
         Aaron Yee, Fengjie Lu, Jiarui Hai, Chenang Jiang, Helin Wang, Siwei Tu, Lingyun Sun
       </p>
-      <!-- <div class="links">
-        <a href="https://arxiv.org/abs/xxxx.xxxxx" target="_blank" rel="noopener noreferrer">Paper</a>
-        <a href="#" target="_blank" rel="noopener noreferrer">Github</a>
-        <a href="#" target="_blank" rel="noopener noreferrer">Benchmark</a>
-      </div> -->
+      <!-- Institution / sponsor logos — add your images to the logos/ directory and duplicate the <img> tags as needed -->
+      <div class="logos">
+        <img src="./logos/ZJU.svg" alt="ZJU" />
+        <img src="./logos/JHU.jpg" alt="JHU" />
+        <img src="./logos/Humanify.png" alt="Humanify" />
+      </div>
+      <div class="links">
+        <a href="https://arxiv.org/abs/xxxx.xxxxx" target="_blank" rel="noopener noreferrer">
+          <span class="icon">
+            <i class="ai ai-arxiv"></i>
+          </span>
+          <span>Paper</span>
+        </a>
+        <a href="#" target="_blank" rel="noopener noreferrer">
+          <span class="icon">
+            <i class="fab fa-github"></i>
+          </span>
+          <span>Github</span>
+        </a>
+        <a href="#" target="_blank" rel="noopener noreferrer">
+          <span class="icon">
+            <i class="fa-solid fa-database"></i>
+          </span>
+          <span>Benchmark</span>
+        </a>
+      </div>
     </section>
 
     <section class="section">
