@@ -16,14 +16,14 @@
 To evaluate the baseline, first clone this repository:
 
 ```bash
-git clone git@github.com:HumanifyAI/VoxRetrieval.git
+git clone git@github.com:caml-labs/VoiceTrace.git
 cd VoxRetrieval
 ``` 
 
 Then, download the evaluation dataset from Hugging Face:
 
 ```bash
-hf download xxxx --local-dir benchmark_data
+hf download cara-ai/VoiceTrace-Bench --local-dir benchmark
 ```
 
 Then prepare the environment and run baseline evaluation:
@@ -32,7 +32,7 @@ Then prepare the environment and run baseline evaluation:
 conda create -n eval python=3.12
 conda activate eval
 pip install -r requirements.txt
-python evaluate_baseline.py --single-dataset-path benchmark_data/single --conv-dataset-path benchmark_data/multi
+python evaluate_baseline.py --single-dataset-path benchmark/single --multi-dataset-path benchmark/multi
 ```
 
 ## Citation
