@@ -12,6 +12,7 @@
       --card: #ffffff;
       --text: #1f2937;
       --muted: #4b5563;
+      --muted-2: #6b7280;
       --accent: #2563eb;
       --border: #e5e7eb;
     }
@@ -311,7 +312,6 @@
 
     .sample-col-right {
       border-left: 1px solid var(--border);
-      justify-content: center;
     }
 
     @media (max-width: 640px) {
@@ -332,6 +332,41 @@
       font-size: 0.95rem;
       color: var(--text);
       line-height: 1.6;
+    }
+
+    .sample-transcript {
+      margin-top: 2px;
+      padding: 8px 10px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.82rem;
+      line-height: 1.6;
+      color: var(--muted-2);
+      max-height: 110px;
+      overflow-y: auto;
+    }
+
+    .transcript-turn {
+      display: flex;
+      gap: 6px;
+    }
+
+    .transcript-turn + .transcript-turn {
+      margin-top: 4px;
+    }
+
+    .speaker-chip {
+      flex-shrink: 0;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      padding: 1px 6px;
+      border-radius: 4px;
+      background: #eef2ff;
+      color: var(--accent);
+      height: fit-content;
+      margin-top: 2px;
     }
 
     .audio-block audio {
@@ -763,8 +798,40 @@ Output: </div>
       return source.includes("single") ? "tag-single" : "tag-multi";
     }
 
+    function escapeHtml(str) {
+      return String(str ?? "").replace(/[&<>"']/g, ch => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
+      })[ch]);
+    }
+
+    // Multi-speaker transcripts arrive as "[S1]: ... [S2]: ..." on a single line;
+    // split them into one row per turn so the speaker switches stay readable.
+    function renderTranscript(text) {
+      const raw = (text || "").trim();
+      if (!raw) return "";
+      const parts = raw.split(/\[(S\d+)\]:/).map(p => p.trim());
+      const lead = parts.shift();
+      if (parts.length === 0) return escapeHtml(lead);
+
+      const turns = [];
+      if (lead) turns.push(`<div class="transcript-turn"><span>${escapeHtml(lead)}</span></div>`);
+      for (let i = 0; i + 1 < parts.length; i += 2) {
+        const speaker = parts[i];
+        const utterance = parts[i + 1];
+        if (!utterance) continue;
+        turns.push(
+          `<div class="transcript-turn">
+             <span class="speaker-chip">${escapeHtml(speaker)}</span>
+             <span>${escapeHtml(utterance)}</span>
+           </div>`
+        );
+      }
+      return turns.join("");
+    }
+
     function renderCard(item) {
       const label = LABELS[item.source] || item.source;
+      const transcriptHtml = renderTranscript(item.document_audio_text);
       return `
         <div class="sample-card" data-source="${item.source}">
           <div class="sample-card-header">
@@ -775,7 +842,7 @@ Output: </div>
             <div class="sample-col">
               <div>
                 <div class="field-label">Query Text</div>
-                <div class="sample-query-text">${item.query_text}</div>
+                <div class="sample-query-text">${escapeHtml(item.query_text)}</div>
               </div>
               <div class="audio-block">
                 <div class="field-label">Query Audio</div>
@@ -787,6 +854,12 @@ Output: </div>
                 <div class="field-label">Document Audio</div>
                 <audio controls preload="none" src="${item.document_audio}"></audio>
               </div>
+              ${transcriptHtml
+                ? `<div>
+                     <div class="field-label">Document Transcript</div>
+                     <div class="sample-transcript">${transcriptHtml}</div>
+                   </div>`
+                : ""}
             </div>
           </div>
         </div>`;
