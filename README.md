@@ -41,7 +41,7 @@ If you find this work useful, please consider contributing to this repo and cite
 ```
 @article{Yee2026voicetrace,
   title={VoiceTrace: A Benchmark and Unified Framework for Who-Said-What Speech Retrieval},
-  author={Aaron Yee and Fengjie Lu and Jiarui Hai and Chenang Jiang and Helin Wang and Siwei Tu and Lingyun Sun},
+  author={Aaron Yee and Fengjie Lu and Jiarui Hai and Chenang Jiang and Helin Wang and Siwei Tu and Weitao You and Lingyun Sun},
   journal={arXiv preprint arXiv:TBD},
   year={2026}
 }

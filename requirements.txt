@@ -1,3 +1,7 @@
 speechbrain
 flagembedding
 whisperx
+datasets
+numpy
+torch
+torchaudio

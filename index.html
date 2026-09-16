@@ -518,7 +518,7 @@
     <section class="hero">
       <h1>VoiceTrace: A Benchmark and Unified Framework for Who-Said-What Speech Retrieval</h1>
       <p class="authors">
-        Aaron Yee, Fengjie Lu, Jiarui Hai, Chenang Jiang, Helin Wang, Siwei Tu, Lingyun Sun
+        Aaron Yee, Fengjie Lu, Jiarui Hai, Chenang Jiang, Helin Wang, Siwei Tu, Weitao You, Lingyun Sun
       </p>
       <!-- Institution / sponsor logos — add your images to the logos/ directory and duplicate the <img> tags as needed -->
       <div class="logos">
@@ -600,7 +600,7 @@ STRICT CONSTRAINTS:
 4. Vary the opening of your questions. Use a diverse range of interrogatives such as "Where", "How", "What", "In which segment". Do not over-rely on "What".
 5. Focus on the core content of the transcript.
 6. Adopt an external observer's perspective, convert second-person references into objective third-person identifiers or abstract topics.
-6. Answer in English, the total length should not exceed {max_words} words.
+7. Answer in English, the total length should not exceed {max_words} words.
 
 Transcript of the specified audio segment: {document}
 
@@ -633,7 +633,7 @@ Output: </div>
         </div>
       </div>
 
-      <h3 class="section-subtitle">Prompts — Conversation</h3>
+      <h3 class="section-subtitle">Prompts — Multi-speaker</h3>
       <div class="prompt-grid">
         <div class="prompt-box">
           <div class="prompt-box-header generate">Generate Prompt</div>
@@ -728,7 +728,7 @@ Output: </div>
       <p>If you find this work useful, please consider contributing to this repo and citing:</p>
       <pre class="citation-block">@article{Yee2026voicetrace,
   title={VoiceTrace: A Benchmark and Unified Framework for Who-Said-What Speech Retrieval},
-  author={Aaron Yee and Fengjie Lu and Jiarui Hai and Chenang Jiang and Helin Wang and Siwei Tu and Lingyun Sun},
+  author={Aaron Yee and Fengjie Lu and Jiarui Hai and Chenang Jiang and Helin Wang and Siwei Tu and Weitao You and Lingyun Sun},
   journal={arXiv preprint arXiv:TBD},
   year={2026}
 }</pre>
@@ -739,7 +739,7 @@ Output: </div>
   <script>
     const LABELS = {
       benchmark_single_sample: "Single-speaker",
-      benchmark_multi_sample: "Conversation",
+      benchmark_multi_sample: "Multi-speaker",
     };
 
     function initFilterButtons() {
@@ -813,11 +813,11 @@ Output: </div>
         targetSpeakerHtml = `<div class="field-label" style="margin-top:10px">Target Speaker</div>
            <div style="font-size:.88rem">${localLabel}</div>`;
       }
-      const isConversation = !item.source.includes("single");
-      const genArrow = isConversation
+      const isMultiSpeaker = !item.source.includes("single");
+      const genArrow = isMultiSpeaker
         ? "Document Transcript + Target Speaker → Query Text"
         : "Document Transcript → Query Text";
-      const verifyArrow = isConversation
+      const verifyArrow = isMultiSpeaker
         ? "Document Transcript + Query Text + Target Speaker → YES / NO"
         : "Document Transcript + Query Text → YES / NO";
 

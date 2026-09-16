@@ -12,7 +12,6 @@ from segmenter import WhisperXSegmenter
 
 import datasets
 import numpy as np
-import whisperx
 
 
 @dataclass
@@ -121,45 +120,6 @@ def ndcg_at_k(rankings: Dict[str, List[str]], query_to_positive: Dict[str, str],
     return total / len(rankings)
 
 
-def _segment_audio_with_text(segmenter: WhisperXSegmenter, audio_path: str) -> tuple[List[np.ndarray], List[str]]:
-    audio = whisperx.load_audio(audio_path)
-    result = segmenter.model.transcribe(audio, language="en")
-    aligned = whisperx.align(
-        result["segments"],
-        segmenter.align_model,
-        segmenter.metadata,
-        audio,
-        segmenter.device,
-        return_char_alignments=False,
-    )
-    segments = aligned["segments"]
-
-    sliced_segments: List[np.ndarray] = []
-    segment_texts: List[str] = []
-    total_samples = len(audio)
-    for seg in segments:
-        start = seg.get("start")
-        end = seg.get("end")
-        text = str(seg.get("text", "")).strip()
-        print(f"Start: {start}, End: {end}, Text: {text}")
-        if start is None or end is None:
-            continue
-        start_idx = int(max(0, round(float(start) * segmenter.sample_rate)))
-        end_idx = int(min(total_samples, round(float(end) * segmenter.sample_rate)))
-        if end_idx <= start_idx:
-            continue
-        sliced_segments.append(audio[start_idx:end_idx])
-        segment_texts.append(text)
-
-    if not sliced_segments:
-        sliced_segments.append(audio)
-        fallback_text = " ".join(
-            str(seg.get("text", "")).strip() for seg in result.get("segments", []) if seg.get("text")
-        )
-        segment_texts.append(fallback_text)
-    return sliced_segments, segment_texts
-
-
 def _safe_text_embedding(text_embedder: FlagAutoModel, text: str, fallback_dim: int) -> np.ndarray:
     cleaned = text.strip()
     if not cleaned:
@@ -205,7 +165,7 @@ def evaluate_retrieval(
     doc_text_embs: Dict[str, np.ndarray] = {}
     for did in doc_ids:
         d_path = doc_id_to_path[did]
-        segments, seg_texts = _segment_audio_with_text(segmenter, d_path)
+        segments, seg_texts = segmenter.segment_audio_with_text(d_path)
         seg_emb_list: List[np.ndarray] = []
         for seg_wav in segments:
             seg_emb_list.append(speaker_embedder.embed_mono_numpy(seg_wav, sample_rate=16000))

@@ -1,7 +1,5 @@
-import torch
-import torchaudio
 import whisperx
-from typing import List
+from typing import List, Tuple
 import numpy as np
 
 class WhisperXSegmenter:
@@ -21,10 +19,11 @@ class WhisperXSegmenter:
         )
         self.sample_rate = sample_rate
 
-    def segment_audio(self, audio_path: str, language: str = "en") -> List[np.ndarray]:
+    def segment_audio_with_text(
+        self, audio_path: str, language: str = "en"
+    ) -> Tuple[List[np.ndarray], List[str]]:
         audio = whisperx.load_audio(audio_path)
         result = self.model.transcribe(audio, language=language)
-        # language = result["language"]
         aligned = whisperx.align(
             result["segments"],
             self.align_model,
@@ -36,11 +35,13 @@ class WhisperXSegmenter:
         segments = aligned["segments"]
 
         sliced_segments: List[np.ndarray] = []
+        segment_texts: List[str] = []
         total_samples = len(audio)
         for seg in segments:
             start = seg.get("start")
             end = seg.get("end")
-            print(f"Start: {start}, End: {end}, Text: {seg.get('text', '')}")
+            text = str(seg.get("text", "")).strip()
+            print(f"Start: {start}, End: {end}, Text: {text}")
             if start is None or end is None:
                 continue
             start_idx = int(max(0, round(float(start) * self.sample_rate)))
@@ -48,9 +49,21 @@ class WhisperXSegmenter:
             if end_idx <= start_idx:
                 continue
             sliced_segments.append(audio[start_idx:end_idx])
+            segment_texts.append(text)
 
         # fallback: no valid ASR segmentation, use whole doc audio
         if not sliced_segments:
             print("No valid ASR segmentation, using whole doc audio")
             sliced_segments.append(audio)
+            segment_texts.append(
+                " ".join(
+                    str(seg.get("text", "")).strip()
+                    for seg in result.get("segments", [])
+                    if seg.get("text")
+                )
+            )
+        return sliced_segments, segment_texts
+
+    def segment_audio(self, audio_path: str, language: str = "en") -> List[np.ndarray]:
+        sliced_segments, _ = self.segment_audio_with_text(audio_path, language=language)
         return sliced_segments
