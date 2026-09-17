@@ -1,8 +1,8 @@
 
 <p align="center">
-  <h1 align="center">VoiceTrace: A Benchmark and Unified Framework for Who-Said-What Speech Retrieval</h1>
+  <h1 align="center">VoiceTrace: A Benchmark and Retrieval Framework for Who-Said-What Speech Retrieval</h1>
   <p align="center">
-    📄 <b><a href="https://arxiv.org/abs/xxxx.xxxxx">Paper</a></b>
+    📄 <b><a href="https://arxiv.org/abs/2609.18521">Paper</a></b>
      | 
     🌐 <b><a href="https://caml-labs.github.io/VoiceTrace/">Project Page</a></b>
      | 
@@ -39,11 +39,14 @@ python evaluate_baseline.py --single-dataset-path benchmark/single --multi-datas
 If you find this work useful, please consider contributing to this repo and cite this work:
 
 ```
-@article{Yee2026voicetrace,
-  title={VoiceTrace: A Benchmark and Unified Framework for Who-Said-What Speech Retrieval},
-  author={Aaron Yee and Fengjie Lu and Jiarui Hai and Chenang Jiang and Helin Wang and Siwei Tu and Weitao You and Lingyun Sun},
-  journal={arXiv preprint arXiv:TBD},
-  year={2026}
+@misc{yee2026voicetrace,
+      title={VoiceTrace: A Benchmark and Retrieval Framework for Who-Said-What Speech Retrieval}, 
+      author={Aaron Yee and Fengjie Lu and Jiarui Hai and Chenang Jiang and Helin Wang and Siwei Tu and Weitao You and Lingyun Sun},
+      year={2026},
+      eprint={2609.18521},
+      archivePrefix={arXiv},
+      primaryClass={cs.SD},
+      url={https://arxiv.org/abs/2609.18521}, 
 }
 ```
 
